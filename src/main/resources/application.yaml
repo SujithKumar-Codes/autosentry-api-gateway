@@ -6,20 +6,22 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      routes:
-        # Route 1: OPEN ENDPOINTS (Login & Register)
-        - id: user-service-auth
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/api/auth/**
+      server:
+        webflux:
+          routes:
+            # Route 1: OPEN ENDPOINTS (Login & Register)
+            - id: user-service-auth
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/api/auth/**
 
-        # Route 2: SECURED ENDPOINTS (Profiles & Notification Preferences)
-        - id: user-service-secured
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/api/users/**
-          filters:
-            - Authentication # This will trigger Authentication filter
+            # Route 2: SECURED ENDPOINTS (Profiles & Notification Preferences)
+            - id: user-service-secured
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - Authentication # This will trigger Authentication filter
 
 eureka:
   client:
@@ -27,3 +29,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     fetch-registry: true
     register-with-eureka: true
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
