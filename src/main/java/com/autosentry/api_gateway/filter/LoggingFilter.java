@@ -1,18 +1,16 @@
 package com.autosentry.api_gateway.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.core.Ordered; // <-- NEW IMPORT
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-public class LoggingFilter implements GlobalFilter, Ordered { // <-- IMPLEMENT ORDERED
-
-    private static final Logger log = LoggerFactory.getLogger(LoggingFilter.class);
+@Slf4j
+public class LoggingFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -31,7 +29,7 @@ public class LoggingFilter implements GlobalFilter, Ordered { // <-- IMPLEMENT O
         }));
     }
 
-    // THE MAGIC STEP: Set the priority
+    // Set the priority
     @Override
     public int getOrder() {
         return -1; // Highest priority. This filter will run FIRST before any routing or security checks.
